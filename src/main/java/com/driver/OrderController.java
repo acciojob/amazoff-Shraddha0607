@@ -44,7 +44,7 @@ public class OrderController {
     }
 
     @GetMapping("/get-order-by-id/{orderId}")
-    public ResponseEntity<Order> getOrderById(@PathVariable String orderId){
+    public ResponseEntity<Order> getOrderById(@PathVariable String orderId) throws Exception{
 
         Order order= null;
         //order should be returned with an orderId.
@@ -60,7 +60,7 @@ public class OrderController {
     }
 
     @GetMapping("/get-partner-by-id/{partnerId}")
-    public ResponseEntity<DeliveryPartner> getPartnerById(@PathVariable String partnerId){
+    public ResponseEntity<DeliveryPartner> getPartnerById(@PathVariable String partnerId) throws Exception{
 
         DeliveryPartner deliveryPartner = null;
 
@@ -151,7 +151,7 @@ public class OrderController {
 
         //Delete an order and also
         // remove it from the assigned order of that partnerId
-
+        orderService.deleteOrder(orderId);
         return new ResponseEntity<>(orderId + " removed successfully", HttpStatus.CREATED);
     }
 }

@@ -41,7 +41,7 @@ public class OrderRepository {
             //increase order count of partner
             //assign partner to this order
             partnerToOrderMap.get(partnerId).add(orderId);    // add order in partnerId, to show order is assigned to this partner
-            orderToPartnerMap.put(orderId, "assigned");     // mark order assigned
+            orderToPartnerMap.put(orderId, partnerId);     // mark order assigned
 
             DeliveryPartner deliveryPartner = partnerMap.get(partnerId);
            int currOrder =  deliveryPartner.getNumberOfOrders();
@@ -109,6 +109,17 @@ public class OrderRepository {
         // your code here
         // delete order by ID
         orderMap.remove(orderId);
+        String partnerId = orderToPartnerMap.get(orderId);
+        if(partnerId.equals("not assigned")){
+
+        }
+        else{
+            HashSet<String > allOrders = partnerToOrderMap.get(partnerId);
+           for(String assignedOrderId : allOrders){
+               if(assignedOrderId.equals(orderId)) allOrders.remove(assignedOrderId);
+           }
+        }
+
     }
 
     public Integer findCountOfUnassignedOrders(){
