@@ -40,8 +40,8 @@ public class OrderRepository {
             //add order to given partner's order list
             //increase order count of partner
             //assign partner to this order
-            partnerToOrderMap.get(partnerId).add(orderId);
-            orderToPartnerMap.put(orderId, partnerId);
+            partnerToOrderMap.get(partnerId).add(orderId);    // add order in partnerId, to show order is assigned to this partner
+            orderToPartnerMap.put(orderId, "assigned");     // mark order assigned
 
             DeliveryPartner deliveryPartner = partnerMap.get(partnerId);
            int currOrder =  deliveryPartner.getNumberOfOrders();
@@ -76,13 +76,17 @@ public class OrderRepository {
 
     public Integer findOrderCountByPartnerId(String partnerId){
         // your code here
-
-        return partnerMap.get(partnerId).getNumberOfOrders();
+        int totalOrder = partnerMap.get(partnerId).getNumberOfOrders();
+        return totalOrder;
     }
 
     public List<String> findOrdersByPartnerId(String partnerId){
         // your code here
-        return new ArrayList<>();
+        List<String> allOrdersRelatedToPartner = new ArrayList<>();
+        for(String order :  partnerToOrderMap.keySet()){
+            allOrdersRelatedToPartner.add(order);
+        }
+        return allOrdersRelatedToPartner;
     }
 
     public List<String> findAllOrders(){
@@ -109,7 +113,13 @@ public class OrderRepository {
 
     public Integer findCountOfUnassignedOrders(){
         // your code here
-        return 0;
+        int total_unassignedOrders = 0;
+        for(String orderStatus : orderToPartnerMap.values()){
+            if(orderStatus.equals("not assigned")){
+                total_unassignedOrders++;
+            }
+        }
+        return total_unassignedOrders;
     }
 
     public Integer findOrdersLeftAfterGivenTimeByPartnerId(String timeString, String partnerId){
