@@ -23,11 +23,15 @@ public class OrderService {
         orderRepository.saveOrderPartnerMap(orderId, partnerId);
     }
 
-    public Order getOrderById(String orderId){
+//    public Order getOrderById(String orderId){
+//        return orderRepository.findOrderById(orderId);
+//    }
+
+    public Order getOrderById(String orderId) throws Exception{
         return orderRepository.findOrderById(orderId);
     }
 
-    public DeliveryPartner getPartnerById(String partnerId){
+    public DeliveryPartner getPartnerById(String partnerId)throws Exception{
         return orderRepository.findPartnerById(partnerId);
     }
 

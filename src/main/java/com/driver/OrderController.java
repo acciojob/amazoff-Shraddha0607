@@ -19,16 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("orders")
 public class OrderController {
 
+    @Autowired
+    OrderService orderService = new OrderService();
 
     @PostMapping("/add-order")
     public ResponseEntity<String> addOrder(@RequestBody Order order){
 
+        orderService.addOrder(order);
         return new ResponseEntity<>("New order added successfully", HttpStatus.CREATED);
     }
 
     @PostMapping("/add-partner/{partnerId}")
     public ResponseEntity<String> addPartner(@PathVariable String partnerId){
-
+            orderService.addPartner(partnerId);
         return new ResponseEntity<>("New delivery partner added successfully", HttpStatus.CREATED);
     }
 
@@ -44,6 +47,13 @@ public class OrderController {
 
         Order order= null;
         //order should be returned with an orderId.
+        try{
+             order = orderService.getOrderById(orderId);
+        }catch (Exception e){
+
+            return new ResponseEntity<>(order, HttpStatus.BAD_REQUEST);
+        }
+
 
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
@@ -54,6 +64,12 @@ public class OrderController {
         DeliveryPartner deliveryPartner = null;
 
         //deliveryPartner should contain the value given by partnerId
+        try{
+            deliveryPartner = orderService.getPartnerById(partnerId);
+        }catch (Exception e){
+
+            return new ResponseEntity<>(deliveryPartner, HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity<>(deliveryPartner, HttpStatus.CREATED);
     }
