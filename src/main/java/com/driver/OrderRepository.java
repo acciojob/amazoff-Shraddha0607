@@ -23,6 +23,7 @@ public class OrderRepository {
         // your code here
         String id = order.getId();
         orderMap.put(id, order);
+        orderToPartnerMap.put(id, "not assigned");
     }
 
     public void savePartner(String partnerId){
@@ -30,6 +31,7 @@ public class OrderRepository {
         // create a new partner with given partnerId and save it
         DeliveryPartner deliveryPartner = new DeliveryPartner(partnerId);
         partnerMap.put(partnerId, deliveryPartner);
+        partnerToOrderMap.put(partnerId, new HashSet<String>());
     }
 
     public void saveOrderPartnerMap(String orderId, String partnerId){
@@ -38,6 +40,15 @@ public class OrderRepository {
             //add order to given partner's order list
             //increase order count of partner
             //assign partner to this order
+            partnerToOrderMap.get(partnerId).add(orderId);
+            orderToPartnerMap.put(orderId, partnerId);
+
+            DeliveryPartner deliveryPartner = partnerMap.get(partnerId);
+           int currOrder =  deliveryPartner.getNumberOfOrders();
+           int newTotalOrder = currOrder +1;
+           deliveryPartner.setNumberOfOrders(newTotalOrder);
+           partnerMap.put(partnerId, deliveryPartner);
+
         }
     }
 
