@@ -27,11 +27,11 @@ public class OrderService {
 //        return orderRepository.findOrderById(orderId);
 //    }
 
-    public Order getOrderById(String orderId) throws Exception{
+    public Order getOrderById(String orderId) {
         return orderRepository.findOrderById(orderId);
     }
 
-    public DeliveryPartner getPartnerById(String partnerId)throws Exception{
+    public DeliveryPartner getPartnerById(String partnerId){
         return orderRepository.findPartnerById(partnerId);
     }
 

@@ -23,7 +23,7 @@ public class OrderRepository {
         // your code here
         String id = order.getId();
         orderMap.put(id, order);
-        orderToPartnerMap.put(id, "not assigned");
+//        orderToPartnerMap.put(id, "not assigned");
     }
 
     public void savePartner(String partnerId){
@@ -43,35 +43,38 @@ public class OrderRepository {
             partnerToOrderMap.get(partnerId).add(orderId);    // add order in partnerId, to show order is assigned to this partner
             orderToPartnerMap.put(orderId, partnerId);     // mark order assigned
 
-            DeliveryPartner deliveryPartner = partnerMap.get(partnerId);
-           int currOrder =  deliveryPartner.getNumberOfOrders();
-           int newTotalOrder = currOrder +1;
-           deliveryPartner.setNumberOfOrders(newTotalOrder);
-           partnerMap.put(partnerId, deliveryPartner);
+//            DeliveryPartner deliveryPartner = partnerMap.get(partnerId);
+//           int currOrder =  deliveryPartner.getNumberOfOrders()+1;
+//
+//           deliveryPartner.setNumberOfOrders(currOrder);
+//           partnerMap.put(partnerId, deliveryPartner);
+
+            DeliveryPartner dp=partnerMap.get(partnerId);
+            dp.setNumberOfOrders(dp.getNumberOfOrders()+1);
 
         }
     }
 
-    public Order findOrderById(String orderId)throws Exception{
+    public Order findOrderById(String orderId){
         // your code here
 
-            if(orderMap.containsKey(orderId)){
+//            if(orderMap.containsKey(orderId)){
                 return orderMap.get(orderId);
-            }
-            else{
-                throw new Exception("Order Id is invalid!!");
-            }
+//            }
+//            else{
+//                throw new Exception("Order Id is invalid!!");
+//            }
 
     }
 
-    public DeliveryPartner findPartnerById(String partnerId) throws Exception{
+    public DeliveryPartner findPartnerById(String partnerId) {
         // your code here
-        if(partnerMap.containsKey(partnerId)){
+//        if(partnerMap.containsKey(partnerId)){
             return partnerMap.get(partnerId);
-        }
-        else{
-            throw new Exception("Partner Id is invalid!!");
-        }
+//        }
+//        else{
+//            throw new Exception("Partner Id is invalid!!");
+//        }
     }
 
     public Integer findOrderCountByPartnerId(String partnerId){
@@ -102,7 +105,14 @@ public class OrderRepository {
     public void deletePartner(String partnerId){
         // your code here
         // delete partner by ID
+
         partnerMap.remove(partnerId);
+        HashSet<String> hs = partnerToOrderMap.get(partnerId);
+        for(String assignedOrder : hs){
+            orderToPartnerMap.put(assignedOrder, "not assigned");
+        }
+        partnerToOrderMap.remove(partnerId);
+
     }
 
     public void deleteOrder(String orderId){
@@ -135,12 +145,37 @@ public class OrderRepository {
 
     public Integer findOrdersLeftAfterGivenTimeByPartnerId(String timeString, String partnerId){
         // your code here
-        return 0;
+        int ans=0;
+        String[] arr=timeString.split(":");
+        int gt=Integer.parseInt(arr[0])*60+Integer.parseInt(arr[1]);
+
+        HashSet<String>hs=partnerToOrderMap.get(partnerId);
+
+        for(String orderid:hs){
+            Order order=orderMap.get(orderid);
+
+            if(orderid!=null && gt>order.getDeliveryTime()){
+                ans++;
+            }
+        }
+        return ans;
+
     }
 
     public String findLastDeliveryTimeByPartnerId(String partnerId){
         // your code here
         // code should return string in format HH:MM
+        int lastTime = Integer.MIN_VALUE;
+        HashSet<String>hs=partnerToOrderMap.get(partnerId);
+
+        for(String orderid:hs){
+            Order order=orderMap.get(orderid);
+
+//            if(lastTime>order.getDeliveryTime()){
+//                ans++;
+//            }
+            lastTime = Math.max(lastTime, order.getDeliveryTime());
+        }
         return "";
     }
 }

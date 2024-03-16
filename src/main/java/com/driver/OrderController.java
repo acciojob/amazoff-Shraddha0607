@@ -48,29 +48,29 @@ public class OrderController {
 
         Order order= null;
         //order should be returned with an orderId.
-        try{
+//        try{
              order = orderService.getOrderById(orderId);
-        }catch (Exception e){
-
-            return new ResponseEntity<>(order, HttpStatus.BAD_REQUEST);
-        }
+//        }catch (Exception e){
+//
+//            return new ResponseEntity<>(order, HttpStatus.BAD_REQUEST);
+//        }
 
 
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
     @GetMapping("/get-partner-by-id/{partnerId}")
-    public ResponseEntity<DeliveryPartner> getPartnerById(@PathVariable String partnerId) throws Exception{
+    public ResponseEntity<DeliveryPartner> getPartnerById(@PathVariable String partnerId){
 
         DeliveryPartner deliveryPartner = null;
 
         //deliveryPartner should contain the value given by partnerId
-        try{
+//        try{
             deliveryPartner = orderService.getPartnerById(partnerId);
-        }catch (Exception e){
-
-            return new ResponseEntity<>(deliveryPartner, HttpStatus.BAD_REQUEST);
-        }
+//        }catch (Exception e){
+//
+//            return new ResponseEntity<>(deliveryPartner, HttpStatus.BAD_REQUEST);
+//        }
 
         return new ResponseEntity<>(deliveryPartner, HttpStatus.CREATED);
     }
@@ -87,14 +87,14 @@ public class OrderController {
     }
 
     @GetMapping("/get-orders-by-partner-id/{partnerId}")
-    public ResponseEntity<List<String>> getOrdersByPartnerId(@PathVariable String partnerId) throws Exception{
+    public ResponseEntity<List<String>> getOrdersByPartnerId(@PathVariable String partnerId) {
         List<String> orders = null;
 
         //orders should contain a list of orders by PartnerId
         orders = orderService.getOrdersByPartnerId(partnerId);
-        if(orders.size() == 0){
-            throw new Exception("No order assigned for this partnerId");
-        }
+//        if(orders.size() == 0){
+//            throw new Exception("No order assigned for this partnerId");
+//        }
 
         return new ResponseEntity<>(orders, HttpStatus.CREATED);
     }
@@ -142,7 +142,7 @@ public class OrderController {
 
         //Delete the partnerId
         //And push all his assigned orders to unassigned orders.
-
+        orderService.deleteOrder(partnerId);
         return new ResponseEntity<>(partnerId + " removed successfully", HttpStatus.CREATED);
     }
 
