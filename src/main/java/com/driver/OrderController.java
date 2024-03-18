@@ -44,17 +44,10 @@ public class OrderController {
     }
 
     @GetMapping("/get-order-by-id/{orderId}")
-    public ResponseEntity<Order> getOrderById(@PathVariable String orderId) throws Exception{
+    public ResponseEntity<Order> getOrderById(@PathVariable String orderId){
 
         Order order= null;
-        //order should be returned with an orderId.
-//        try{
              order = orderService.getOrderById(orderId);
-//        }catch (Exception e){
-//
-//            return new ResponseEntity<>(order, HttpStatus.BAD_REQUEST);
-//        }
-
 
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
@@ -92,10 +85,6 @@ public class OrderController {
 
         //orders should contain a list of orders by PartnerId
         orders = orderService.getOrdersByPartnerId(partnerId);
-//        if(orders.size() == 0){
-//            throw new Exception("No order assigned for this partnerId");
-//        }
-
         return new ResponseEntity<>(orders, HttpStatus.CREATED);
     }
 

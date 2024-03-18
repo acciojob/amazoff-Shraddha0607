@@ -23,7 +23,7 @@ public class OrderRepository {
         // your code here
         String id = order.getId();
         orderMap.put(id, order);
-//        orderToPartnerMap.put(id, "not assigned");
+        orderToPartnerMap.put(id, "not assigned");
     }
 
     public void savePartner(String partnerId){
@@ -41,7 +41,7 @@ public class OrderRepository {
             //increase order count of partner
             //assign partner to this order
             partnerToOrderMap.get(partnerId).add(orderId);    // add order in partnerId, to show order is assigned to this partner
-            orderToPartnerMap.put(orderId, partnerId);     // mark order assigned
+            orderToPartnerMap.put(orderId,  partnerId);     // mark order assigned
 
 //            DeliveryPartner deliveryPartner = partnerMap.get(partnerId);
 //           int currOrder =  deliveryPartner.getNumberOfOrders()+1;
@@ -57,24 +57,20 @@ public class OrderRepository {
 
     public Order findOrderById(String orderId){
         // your code here
-
-//            if(orderMap.containsKey(orderId)){
-                return orderMap.get(orderId);
-//            }
-//            else{
-//                throw new Exception("Order Id is invalid!!");
-//            }
-
+        Order order = null;
+            if(orderMap.containsKey(orderId)){
+                order= orderMap.get(orderId);
+            }
+            return order;
     }
 
     public DeliveryPartner findPartnerById(String partnerId) {
         // your code here
-//        if(partnerMap.containsKey(partnerId)){
-            return partnerMap.get(partnerId);
-//        }
-//        else{
-//            throw new Exception("Partner Id is invalid!!");
-//        }
+        DeliveryPartner deliveryPartner = null;
+        if(partnerMap.containsKey(partnerId)){
+            deliveryPartner= partnerMap.get(partnerId);
+        }
+        return deliveryPartner;
     }
 
     public Integer findOrderCountByPartnerId(String partnerId){
@@ -86,7 +82,9 @@ public class OrderRepository {
     public List<String> findOrdersByPartnerId(String partnerId){
         // your code here
         List<String> allOrdersRelatedToPartner = new ArrayList<>();
-        for(String order :  partnerToOrderMap.keySet()){
+        HashSet<String> hs = new HashSet<>();
+        hs = partnerToOrderMap.get(partnerId);
+        for(String order :  hs){
             allOrdersRelatedToPartner.add(order);
         }
         return allOrdersRelatedToPartner;
@@ -165,17 +163,15 @@ public class OrderRepository {
     public String findLastDeliveryTimeByPartnerId(String partnerId){
         // your code here
         // code should return string in format HH:MM
-        int lastTime = Integer.MIN_VALUE;
-        HashSet<String>hs=partnerToOrderMap.get(partnerId);
-
-        for(String orderid:hs){
-            Order order=orderMap.get(orderid);
-
-//            if(lastTime>order.getDeliveryTime()){
-//                ans++;
-//            }
-            lastTime = Math.max(lastTime, order.getDeliveryTime());
-        }
+//        int lastTime = Integer.MIN_VALUE;
+//        HashSet<String>hs=partnerToOrderMap.get(partnerId);
+//
+//        for(String orderid:hs){
+//            Order order=orderMap.get(orderid);
+//
+////
+//            lastTime = Math.max(lastTime, order.getDeliveryTime());
+//        }
         return "";
     }
 }
