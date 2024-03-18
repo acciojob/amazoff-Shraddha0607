@@ -161,6 +161,8 @@ public class OrderRepository {
     public Integer findOrdersLeftAfterGivenTimeByPartnerId(String timeString, String partnerId){
         // your code here
         int ans=0;
+        if(!partnerMap.containsKey(partnerId) || partnerToOrderMap.get(partnerId).size() == 0) return 0;
+
         String[] arr=timeString.split(":");
         int gt=Integer.parseInt(arr[0])*60+Integer.parseInt(arr[1]);
 
@@ -168,10 +170,8 @@ public class OrderRepository {
 
         for(String orderid:hs){
             Order order=orderMap.get(orderid);
+            if(gt <  order.getDeliveryTime()) ans++;
 
-            if(orderid!=null && gt>order.getDeliveryTime()){
-                ans++;
-            }
         }
         return ans;
 
@@ -188,10 +188,9 @@ public class OrderRepository {
 
         for(String orderid:hs){
             Order order=orderMap.get(orderid);
-
-//
             lastTime = Math.max(lastTime, order.getDeliveryTime());
         }
+
         int hh = lastTime/60;
         int mm = lastTime%60;
         String hhInS = String.valueOf(hh);
