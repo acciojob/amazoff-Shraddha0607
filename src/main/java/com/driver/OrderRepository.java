@@ -180,15 +180,25 @@ public class OrderRepository {
     public String findLastDeliveryTimeByPartnerId(String partnerId){
         // your code here
         // code should return string in format HH:MM
-//        int lastTime = Integer.MIN_VALUE;
-//        HashSet<String>hs=partnerToOrderMap.get(partnerId);
+
+        if(partnerMap.containsKey(partnerId) || partnerToOrderMap.get(partnerId).size() == 0) return "nothing allocated!!";
+
+        int lastTime = Integer.MIN_VALUE;
+        HashSet<String>hs=partnerToOrderMap.get(partnerId);
+
+        for(String orderid:hs){
+            Order order=orderMap.get(orderid);
+
 //
-//        for(String orderid:hs){
-//            Order order=orderMap.get(orderid);
-//
-////
-//            lastTime = Math.max(lastTime, order.getDeliveryTime());
-//        }
-        return "";
+            lastTime = Math.max(lastTime, order.getDeliveryTime());
+        }
+        int hh = lastTime/60;
+        int mm = lastTime%60;
+        String hhInS = String.valueOf(hh);
+        String mmInS = String.valueOf(mm);
+        if(hhInS.length()==1) hhInS = "0"+hhInS;
+        if(mmInS.length() == 1) mmInS = "0" +mmInS;
+        String lastTimeInS = hhInS +":" + mmInS;
+        return lastTimeInS;
     }
 }
