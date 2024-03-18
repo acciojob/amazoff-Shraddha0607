@@ -75,13 +75,17 @@ public class OrderRepository {
 
     public Integer findOrderCountByPartnerId(String partnerId){
         // your code here
+        if(!partnerMap.containsKey(partnerId)) return 0;         // if Id not exist
         int totalOrder = partnerMap.get(partnerId).getNumberOfOrders();
         return totalOrder;
     }
 
     public List<String> findOrdersByPartnerId(String partnerId){
         // your code here
+
         List<String> allOrdersRelatedToPartner = new ArrayList<>();
+        if(!partnerMap.containsKey(partnerId)) return allOrdersRelatedToPartner;
+
         HashSet<String> hs = new HashSet<>();
         hs = partnerToOrderMap.get(partnerId);
         for(String order :  hs){
@@ -104,12 +108,21 @@ public class OrderRepository {
         // your code here
         // delete partner by ID
 
+        if(!partnerMap.containsKey(partnerId)) return;     // if partner id not exist
         partnerMap.remove(partnerId);
         HashSet<String> hs = partnerToOrderMap.get(partnerId);
-        for(String assignedOrder : hs){
-            orderToPartnerMap.put(assignedOrder, "not assigned");
-        }
         partnerToOrderMap.remove(partnerId);
+        if(hs.size()==0){
+            return;
+        }
+        else{
+
+            for(String assignedOrder : hs){
+                orderToPartnerMap.put(assignedOrder, "not assigned");
+            }
+        }
+
+
 
     }
 
@@ -118,8 +131,10 @@ public class OrderRepository {
         // delete order by ID
         orderMap.remove(orderId);
         String partnerId = orderToPartnerMap.get(orderId);
-        if(partnerId.equals("not assigned")){
 
+
+        if(partnerId.equals("not assigned")){
+            return;
         }
         else{
             HashSet<String > allOrders = partnerToOrderMap.get(partnerId);
@@ -127,6 +142,8 @@ public class OrderRepository {
                if(assignedOrderId.equals(orderId)) allOrders.remove(assignedOrderId);
            }
         }
+        DeliveryPartner dp=partnerMap.get(partnerId);
+        dp.setNumberOfOrders(dp.getNumberOfOrders()-1);
 
     }
 
