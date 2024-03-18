@@ -181,7 +181,7 @@ public class OrderRepository {
         // your code here
         // code should return string in format HH:MM
 
-        if(partnerMap.containsKey(partnerId) || partnerToOrderMap.get(partnerId).size() == 0) return "nothing allocated!!";
+        if(!partnerMap.containsKey(partnerId) || partnerToOrderMap.get(partnerId).size() == 0) return "nothing allocated!!";
 
         int lastTime = Integer.MIN_VALUE;
         HashSet<String>hs=partnerToOrderMap.get(partnerId);
